@@ -1,0 +1,46 @@
+.card {
+  width: 300px;
+  height: 250px;
+  border-radius: 8px;
+  box-shadow: 0px 0.260424px 0.781272px rgba(0, 0, 0, 0.1),
+    0px 1.38893px 3.12509px rgba(0, 0, 0, 0.13);
+}
+
+.cards-body {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px;
+  height: 36px;
+  align-items: baseline;
+  padding-bottom: 0px;
+  padding-top: 6px;
+}
+
+img {
+  height: 210px;
+  border-top-right-radius: var(--bs-card-border-radius);
+  border-top-left-radius: var(--bs-card-border-radius);
+  object-fit: cover;
+}
+
+.username {
+  color: #8c8c8c;
+  height: 20px;
+  font-weight: 500;
+}
+
+.likes {
+  display: flex;
+  gap: 0.5rem;
+  height: 20px;
+  align-items: baseline;
+}
+
+h6,
+p {
+  margin-bottom: 0;
+}
+
+p {
+  font-size: 14px;
+}

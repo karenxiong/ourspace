@@ -1,0 +1,104 @@
+.post-modal-overlay,
+.post-modal-body {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+}
+
+.post-modal-overlay {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  z-index: 999;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.post-modal-body {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
+  background-color: white;
+  padding: 1rem;
+
+  .post-modal-title {
+    margin: 1.5rem 0;
+    font-size: 24px;
+  }
+
+  .post-modal-content {
+    padding: 1rem 4rem 2.5rem 4rem;
+    background-color: white;
+    border-radius: 10px;
+    max-width: 60rem;
+    width: 100%;
+    height: 50rem;
+    border: 2px solid rgb(240, 240, 240);
+    box-shadow: rgba(100, 100, 111, 0.3) 0px 7px 29px 0px;
+  }
+
+  .post-modal-description {
+    margin: 1rem 0;
+    font-size: 1rem;
+  }
+
+  padding-top: 11.5625rem;
+  background-color: transparent;
+}
+
+.post-modal-img {
+  width: 100%;
+  height: 70%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.post-modal-info {
+  display: flex;
+  justify-content: space-between;
+  margin: 1rem 0;
+}
+
+.post-modal-username {
+  color: #62888d;
+  font-size: 16px;
+}
+
+.post-modal-timestamp {
+  color: #8c8c8c;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.post-modal-likes {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.post-modal-comments {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row-reverse;
+}
+
+.post-modal-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.post-modal-close {
+  border: none;
+  background-color: white;
+}

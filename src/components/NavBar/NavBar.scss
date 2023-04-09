@@ -1,0 +1,49 @@
+* {
+  font-family: Poppins;
+}
+
+.logo {
+  background-image: url(https://svgshare.com/i/rmL.svg);
+  width: 2.5rem;
+}
+
+.btn-primary {
+  background-color: #548f93;
+  border: none;
+  border-radius: 12px;
+  font-weight: 500;
+}
+
+// .navbar-nav {
+//   margin-left: auto;
+// }
+
+.nav-container li.nav-item a.ourspace-brand.nav-link {
+  color: #548f93;
+  border-bottom: none;
+  font-weight: 500;
+  font-size: 28px;
+  line-height: 20px;
+  letter-spacing: 0.06em;
+  margin-right: 0;
+  margin: 0 auto;
+  width: 50%;
+}
+
+.navbar-light.bg-light .nav-link {
+  color: #6a878a;
+  &:hover {
+    color: #6a878a;
+  }
+}
+
+.navbar-light .navbar-nav .nav-link:focus,
+.navbar-light .navbar-nav .nav-link:hover {
+  color: #6a878a;
+}
+
+a.ourspace-brand.nav-link {
+  padding-bottom: 0px;
+  margin-left: auto;
+  color: #548f93;
+}

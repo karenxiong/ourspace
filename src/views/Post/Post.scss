@@ -1,0 +1,32 @@
+.formbtns {
+  margin: 4rem 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.postbtn {
+  color: white;
+  border: none;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 20px;
+  letter-spacing: 0.06em;
+  background-color: #548f93;
+  padding: 0.8rem 2rem;
+  border-radius: 20px;
+}
+
+.cancelbtn {
+  border: none;
+  background-color: white;
+  font-size: 18px;
+  line-height: 20px;
+  letter-spacing: 0.06em;
+  color: rgb(176, 38, 38);
+  font-weight: 500;
+}
+
+.uploaded-image {
+  height: 1000px;
+  object-fit: contain;
+}

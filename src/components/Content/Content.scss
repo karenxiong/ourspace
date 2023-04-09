@@ -1,0 +1,28 @@
+main {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+header {
+  display: flex;
+  margin: 0 0 2rem 0;
+}
+
+.content-header {
+  color: #979797;
+  width: 100%;
+  font-weight: 400;
+  letter-spacing: 0.08rem;
+}
+
+.post {
+  border: none;
+  color: white;
+  background-color: #548f93;
+  border-radius: 100px;
+  font-weight: 600;
+  width: 198px;
+  height: 40px;
+  letter-spacing: 0.1rem;
+}
