@@ -23,6 +23,7 @@ export default function Post() {
     const formData = new FormData();
     formData.append("uploaded_file", uploadImage);
     formData.append("user_id", user.sub);
+    formData.append("user_nickname", user.nickname);
     formData.append("title", title);
     formData.append("description", description);
     const accessToken = await getAccessTokenSilently({});
@@ -38,14 +39,8 @@ export default function Post() {
         formData,
         config
       );
-
+      history.push("/");
       console.log("response from POST /posts", response);
-      // const post = response.data.post;
-      // const uint8Array = new Uint8Array(post.image.data);
-      // const image = btoa(String.fromCharCode.apply(null, uint8Array));
-      // console.log(image);
-      // setUploadImage(null); // only reset uploadImage if API call succeeds
-      // history.push("/");
     } catch (err) {
       console.log(err);
     }

@@ -10,6 +10,10 @@ export default function Cards({
   setSelectedPost,
   setShowModal,
 }) {
+  const img = !image.includes("http")
+    ? `http://localhost:8080/${image}`
+    : image;
+
   return (
     <div
       className="card"
@@ -18,7 +22,7 @@ export default function Cards({
         setShowModal(true);
       }}
     >
-      <img src={image} alt="space image" />
+      <img src={img} alt="space image" />
       <div className="cards-body">
         <h6 className="username">@{username}</h6>
         <div className="likes">

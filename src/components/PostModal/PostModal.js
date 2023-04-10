@@ -13,6 +13,9 @@ export default function PostModal({
   timestamp,
   onClose,
 }) {
+  const img = !image.includes("http")
+    ? `http://localhost:8080/${image}`
+    : image;
   return (
     <>
       <div className="post-modal-overlay" />
@@ -28,7 +31,7 @@ export default function PostModal({
             <h5 className="post-modal-username">@{username}</h5>
             <h6 className="post-modal-timestamp">{timestamp}</h6>
           </div>
-          <img className="post-modal-img" src={image} alt="post image" />
+          <img className="post-modal-img" src={img} alt="post image" />
           <p className="post-modal-description">{description}</p>
           <div className="post-modal-comments">
             <div className="post-modal-likes">

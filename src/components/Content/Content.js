@@ -42,7 +42,7 @@ export default function Content() {
             <PostModal
               title={selectedPost.title}
               image={selectedPost.image} // Append imageBaseURL to the image filename
-              username={selectedPost.username}
+              username={selectedPost.user_nickname}
               description={selectedPost.description}
               likes={selectedPost.likes}
               timestamp={selectedPost.timestamp}
@@ -54,7 +54,7 @@ export default function Content() {
           <Cards
             key={post.id}
             post={post}
-            username={post.username}
+            username={post.user_nickname}
             image={post.image} // Append imageBaseURL to the image filename
             likes={post.likes}
             setShowModal={setShowModal}
