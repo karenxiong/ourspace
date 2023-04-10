@@ -4,6 +4,7 @@ import { Link, useHistory } from "react-router-dom";
 import React, { useState, useRef } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Form, FormGroup, Label, Input } from "reactstrap";
+import ImageMarker, { Marker } from "react-image-marker";
 
 export default function Post() {
   const history = useHistory();
@@ -11,47 +12,7 @@ export default function Post() {
   const [description, setDescription] = useState("");
   const [uploadImage, setUploadImage] = useState(null);
   const { user, getAccessTokenSilently } = useAuth0();
-
-  //new code
-  const [tags, setTags] = useState([]);
-  const [inputTag, setInputTag] = useState("");
-  const [inputPosition, setInputPosition] = useState({ x: 0, y: 0 });
-  const inputRef = useRef(null);
-
-  const onImageClick = (event) => {
-    console.log("Image clicked");
-    if (event.target !== inputRef.current) {
-      const rect = event.target.getBoundingClientRect();
-      const x = event.clientX - rect.left;
-      const y = event.clientY - rect.top;
-      console.log({ x, y });
-      setInputPosition({ x, y });
-      setInputTag(" "); // Set this to a non-empty string
-      setTimeout(() => {
-        console.log("setting focus");
-        inputRef.current.focus();
-      }, 100);
-    }
-  };
-
-  const onInputBlur = async () => {
-    console.log("input blurred");
-    const text = inputRef.current.value.trim();
-    if (text !== "") {
-      const newTag = {
-        text,
-        x: inputPosition.x,
-        y: inputPosition.y,
-      };
-      setTags([...tags, newTag]);
-
-      // Save the new tag to the database
-      await axios.post("/api/tags", newTag);
-    }
-    setInputTag("");
-  };
-
-  //end of new code
+  const [markers, setMarkers] = useState([]);
 
   const uploadHandler = (event) => {
     console.log(event.target.files[0]);
@@ -59,6 +20,13 @@ export default function Post() {
   };
 
   const handleSubmit = async (e) => {
+    const accessToken = await getAccessTokenSilently({});
+    const config = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    };
     console.log(user);
     e.preventDefault();
     const formData = new FormData();
@@ -67,19 +35,33 @@ export default function Post() {
     formData.append("user_nickname", user.nickname);
     formData.append("title", title);
     formData.append("description", description);
-    const accessToken = await getAccessTokenSilently({});
-    const config = {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${accessToken}`,
-      },
-    };
+
+    console.log(markers);
+
     try {
       const response = await axios.post(
         "http://localhost:8080/posts",
         formData,
         config
       );
+
+      console.log("response", response);
+      // create all the markers after we finish creating the post
+      for (let i = 0; i < markers.length; i++) {
+        const markerFormData = new FormData();
+        markerFormData.append("title", markers[i].title);
+        markerFormData.append("link", markers[i].link);
+        markerFormData.append("xaxis", markers[i].left);
+        markerFormData.append("yaxis", markers[i].top);
+        markerFormData.append("post_id", response.data.post.id);
+        const markerResponse = await axios.post(
+          "http://localhost:8080/items",
+          markerFormData,
+          config
+        );
+        console.log("markerResponse: ", markerResponse);
+      }
+
       history.push("/");
       console.log("response from POST /posts", response);
     } catch (err) {
@@ -121,72 +103,16 @@ export default function Post() {
               className="image-container"
               style={{ position: "relative", display: "inline-block" }}
             >
-              <img
+              <ImageMarker
                 className="uploaded-image"
+                markers={markers}
+                onAddMarker={(marker) =>
+                  setMarkers([...markers, { ...marker, title: "", link: "" }])
+                }
                 src={URL.createObjectURL(uploadImage)}
                 alt="Sample"
               />
-              <div className="overlay" onMouseDown={onImageClick}></div>
-              {tags.map((tag, index) => (
-                <span
-                  key={index}
-                  className="tag"
-                  style={{
-                    position: "absolute",
-                    left: tag.x,
-                    top: tag.y,
-                    backgroundColor: "rgba(0, 0, 0, 0.5)",
-                    color: "white",
-                    padding: "3px",
-                    borderRadius: "3px",
-                  }}
-                >
-                  {tag.text}
-                </span>
-              ))}
-              <input
-                ref={inputRef}
-                className="tag-input"
-                value={inputTag}
-                onBlur={onInputBlur}
-                onChange={(e) => setInputTag(e.target.value)}
-                style={{
-                  width: "100px",
-                  height: "20px",
-                  position: "absolute",
-                  left: inputPosition.x,
-                  top: inputPosition.y,
-                  zIndex: 2,
-                  display:
-                    inputTag.trim() === "" &&
-                    !inputRef.current?.contains(document.activeElement)
-                      ? "none"
-                      : "block",
-                  backgroundColor: "transparent",
-                }}
-                tabIndex="-1"
-              />
             </div>
-
-            //end new code
-            /*           <div>
-              {console.log(URL.createObjectURL(uploadImage))}
-              <img
-                className="uploaded-image"
-                alt="not found"
-                width={"100%"}
-                height={"100%"}
-                max-width={"100%"}
-                src={URL.createObjectURL(uploadImage)}
-              />
-              <br />
-              <button
-                className="post-btns"
-                onClick={() => setUploadImage(null)}
-              >
-                Remove
-              </button>
-            </div> */
           )}
           <br />
           <br />
@@ -197,6 +123,63 @@ export default function Post() {
             onChange={uploadHandler}
           />
         </FormGroup>
+
+        {markers.map((marker, index) => (
+          <FormGroup key={index}>
+            <Label for={`markerTitle ${index + 1}`}>Item {index + 1}</Label>
+            <Input
+              value={marker.title}
+              name={`markerTitle ${index + 1}`}
+              placeholder="Enter item name"
+              type="text"
+              onChange={(e) => {
+                const updatedMarkers = markers.map((m, i) => {
+                  if (i === index) {
+                    return {
+                      ...m,
+                      title: e.target.value,
+                    };
+                  } else {
+                    return m;
+                  }
+                });
+
+                setMarkers(updatedMarkers);
+              }}
+            />
+            <Label for={`markerLink ${index + 1}`}>Link {index + 1}</Label>
+            <Input
+              value={marker.link}
+              name={`markerLink ${index + 1}`}
+              placeholder="Paste item link"
+              type="text"
+              onChange={(e) => {
+                const updatedMarkers = markers.map((m, i) => {
+                  if (i === index) {
+                    return {
+                      ...m,
+                      link: e.target.value,
+                    };
+                  } else {
+                    return m;
+                  }
+                });
+
+                setMarkers(updatedMarkers);
+              }}
+            />
+          </FormGroup>
+        ))}
+        {/* <Label for="postTitle">Title</Label>
+          <Input
+            id="postTitle"
+            value={title}
+            name="title"
+            placeholder="Enter post title"
+            type="text"
+            onChange={(e) => setTitle(e.target.value)}
+          /> */}
+
         <div className="formbtns">
           <Link to="/">
             <button className="cancelbtn">Cancel</button>

@@ -40,6 +40,7 @@ export default function Content() {
           selectedPost &&
           createPortal(
             <PostModal
+              id={selectedPost.id}
               title={selectedPost.title}
               image={selectedPost.image} // Append imageBaseURL to the image filename
               username={selectedPost.user_nickname}

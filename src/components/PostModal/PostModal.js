@@ -1,8 +1,12 @@
+import axios from "axios";
+import React, { useState, useEffect } from "react";
 import "./PostModal.scss";
 import { SlHeart } from "react-icons/sl";
 import { MdOutlineClose } from "react-icons/md";
+import ImageMarker, { Marker } from "react-image-marker";
 
 export default function PostModal({
+  id,
   title,
   image,
   username,
@@ -13,6 +17,19 @@ export default function PostModal({
   timestamp,
   onClose,
 }) {
+  const [markers, setMarkers] = useState([]);
+  console.log(id);
+  console.log(" someorimaemadfslkmasdklfmal");
+  useEffect(() => {
+    (async () => {
+      const response = await axios.get(
+        `http://localhost:8080/posts/${id}/markers`
+      );
+      setMarkers(response.data);
+      console.log(" == = = = = == = = =response: ", response);
+    })();
+  }, []);
+
   const img = !image.includes("http")
     ? `http://localhost:8080/${image}`
     : image;
@@ -31,7 +48,22 @@ export default function PostModal({
             <h5 className="post-modal-username">@{username}</h5>
             <h6 className="post-modal-timestamp">{timestamp}</h6>
           </div>
-          <img className="post-modal-img" src={img} alt="post image" />
+          <ImageMarker
+            className="uploaded-image"
+            src={img}
+            alt="post image"
+            markers={markers}
+          />
+          <hr></hr>
+          <h1>Marker Legend</h1>
+          {markers.map((marker, index) => (
+            <div>
+              <h2>Marker {index + 1}</h2>
+              <p>Title: {marker.title}</p>
+              <p>Link: {marker.link}</p>
+            </div>
+          ))}
+          <hr></hr>
           <p className="post-modal-description">{description}</p>
           <div className="post-modal-comments">
             <div className="post-modal-likes">
