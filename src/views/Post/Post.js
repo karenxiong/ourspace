@@ -1,71 +1,51 @@
 import "./Post.scss";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Form, FormGroup, Label, Input } from "reactstrap";
 
 export default function Post() {
+  const history = useHistory();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [uploadImage, setUploadImage] = useState(null);
-  const [userSub, setUserSub] = useState("");
-  const {
-    user,
-    isAuthenticated,
-    loginWithRedirect,
-    logout,
-    getAccessTokenSilently,
-  } = useAuth0();
+  const { user, getAccessTokenSilently } = useAuth0();
 
-  const [userMetadata, setUserMetadata] = useState(null);
-
-  useEffect(() => {
-    const getUserMetadata = async () => {
-      try {
-        console.log("enter try", user);
-        const accessToken = await getAccessTokenSilently({});
-        const data = {};
-        console.log("accessToken: ", accessToken);
-        const response = await axios.get("http://localhost:8080/posts", {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-
-        console.log(response);
-      } catch (e) {
-        console.log(e.message);
-        console.log("enter error");
-      }
-    };
-
-    getUserMetadata();
-  }, [getAccessTokenSilently, user?.sub]);
+  const uploadHandler = (event) => {
+    console.log(event.target.files[0]);
+    setUploadImage(event.target.files[0]);
+  };
 
   const handleSubmit = async (e) => {
+    console.log(user);
     e.preventDefault();
-    console.log(userSub);
+    const formData = new FormData();
+    formData.append("uploaded_file", uploadImage);
+    formData.append("user_id", user.sub);
+    formData.append("title", title);
+    formData.append("description", description);
+    const accessToken = await getAccessTokenSilently({});
+    const config = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    };
     try {
-      const accessToken = await getAccessTokenSilently({});
-      const res = await fetch("http://localhost:8080/posts", {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-        method: "POST",
-        body: JSON.stringify({
-          user_id: userSub,
-          title: title,
-          uploadImage: uploadImage,
-          description: description,
-        }),
-      });
-      let resJson = await res.json();
-      if (res.status === 200) {
-        console.log("Post created successfully");
-      } else {
-        console.log("Some error occured");
-      }
+      const response = await axios.post(
+        "http://localhost:8080/posts",
+        formData,
+        config
+      );
+
+      console.log("response from POST /posts", response);
+      // const post = response.data.post;
+      // const uint8Array = new Uint8Array(post.image.data);
+      // const image = btoa(String.fromCharCode.apply(null, uint8Array));
+      // console.log(image);
+      // setUploadImage(null); // only reset uploadImage if API call succeeds
+      // history.push("/");
     } catch (err) {
       console.log(err);
     }
@@ -74,12 +54,7 @@ export default function Post() {
   return (
     <div>
       <h1>Post your space</h1>
-      <Form
-        action="/stats"
-        enctype="multipart/form-data"
-        method="post"
-        onSubmit={handleSubmit}
-      >
+      <Form encType="multipart/form-data" method="post" onSubmit={handleSubmit}>
         <FormGroup>
           <Label for="postTitle">Title</Label>
           <Input
@@ -105,7 +80,7 @@ export default function Post() {
         <FormGroup>
           {uploadImage && (
             <div>
-              {console.log(uploadImage.name)}
+              {console.log(URL.createObjectURL(uploadImage))}
               <img
                 className="uploaded-image"
                 alt="not found"
@@ -126,14 +101,10 @@ export default function Post() {
           <br />
           <br />
           <Input
-            className="post-btns"
+            className="upload-image"
             type="file"
-            // value={uploadImage}
-            name="image"
-            onChange={(event) => {
-              console.log(event.target.files[0]);
-              setUploadImage(event.target.files[0]);
-            }}
+            name="uploaded_file"
+            onChange={uploadHandler}
           />
         </FormGroup>
         <div className="formbtns">

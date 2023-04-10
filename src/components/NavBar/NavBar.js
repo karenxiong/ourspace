@@ -99,7 +99,7 @@ const NavBar = () => {
                       alt="Profile"
                       className="nav-user-profile rounded-circle"
                       width="50"
-                      referrerpolicy="no-referrer"
+                      referrerPolicy="no-referrer"
                     />
                   </DropdownToggle>
                   <DropdownMenu>

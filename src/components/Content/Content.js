@@ -1,11 +1,9 @@
-// Package Imports
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { createPortal } from "react-dom";
 
-// Import Styles & Components
 import Cards from "../Cards/Cards";
 import "./Content.scss";
 import PostModal from "../PostModal/PostModal.js";
@@ -15,9 +13,13 @@ export default function Content() {
   const [selectedPost, setSelectedPost] = useState();
   const [showModal, setShowModal] = useState(false);
 
+  // Add this constant for the base image URL
+  const imageBaseURL = "http://localhost:8080/resources/static/assets/uploads/";
+
   useEffect(() => {
     axios.get("http://localhost:8080/posts").then((resp) => {
       setPostData(resp.data);
+      console.log(resp.data);
     });
   }, [showModal]);
 
@@ -39,12 +41,10 @@ export default function Content() {
           createPortal(
             <PostModal
               title={selectedPost.title}
-              image={selectedPost.image}
+              image={selectedPost.image} // Append imageBaseURL to the image filename
               username={selectedPost.username}
               description={selectedPost.description}
-              // item_id={selectedPost.item_id}
               likes={selectedPost.likes}
-              // comment_id={selectedPost.comment_id}
               timestamp={selectedPost.timestamp}
               onClose={() => setShowModal(false)}
             />,
@@ -55,40 +55,7 @@ export default function Content() {
             key={post.id}
             post={post}
             username={post.username}
-            image={post.image}
-            likes={post.likes}
-            setShowModal={setShowModal}
-            setSelectedPost={setSelectedPost}
-          />
-        ))}
-        {postData.map((post) => (
-          <Cards
-            key={post.id}
-            post={post}
-            username={post.username}
-            image={post.image}
-            likes={post.likes}
-            setShowModal={setShowModal}
-            setSelectedPost={setSelectedPost}
-          />
-        ))}
-        {postData.map((post) => (
-          <Cards
-            key={post.id}
-            post={post}
-            username={post.username}
-            image={post.image}
-            likes={post.likes}
-            setShowModal={setShowModal}
-            setSelectedPost={setSelectedPost}
-          />
-        ))}
-        {postData.map((post) => (
-          <Cards
-            key={post.id}
-            post={post}
-            username={post.username}
-            image={post.image}
+            image={post.image} // Append imageBaseURL to the image filename
             likes={post.likes}
             setShowModal={setShowModal}
             setSelectedPost={setSelectedPost}
