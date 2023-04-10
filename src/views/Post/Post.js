@@ -1,7 +1,7 @@
 import "./Post.scss";
 import axios from "axios";
 import { Link, useHistory } from "react-router-dom";
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Form, FormGroup, Label, Input } from "reactstrap";
 
@@ -11,6 +11,47 @@ export default function Post() {
   const [description, setDescription] = useState("");
   const [uploadImage, setUploadImage] = useState(null);
   const { user, getAccessTokenSilently } = useAuth0();
+
+  //new code
+  const [tags, setTags] = useState([]);
+  const [inputTag, setInputTag] = useState("");
+  const [inputPosition, setInputPosition] = useState({ x: 0, y: 0 });
+  const inputRef = useRef(null);
+
+  const onImageClick = (event) => {
+    console.log("Image clicked");
+    if (event.target !== inputRef.current) {
+      const rect = event.target.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      console.log({ x, y });
+      setInputPosition({ x, y });
+      setInputTag(" "); // Set this to a non-empty string
+      setTimeout(() => {
+        console.log("setting focus");
+        inputRef.current.focus();
+      }, 100);
+    }
+  };
+
+  const onInputBlur = async () => {
+    console.log("input blurred");
+    const text = inputRef.current.value.trim();
+    if (text !== "") {
+      const newTag = {
+        text,
+        x: inputPosition.x,
+        y: inputPosition.y,
+      };
+      setTags([...tags, newTag]);
+
+      // Save the new tag to the database
+      await axios.post("/api/tags", newTag);
+    }
+    setInputTag("");
+  };
+
+  //end of new code
 
   const uploadHandler = (event) => {
     console.log(event.target.files[0]);
@@ -74,7 +115,61 @@ export default function Post() {
         </FormGroup>
         <FormGroup>
           {uploadImage && (
-            <div>
+            //new code
+
+            <div
+              className="image-container"
+              style={{ position: "relative", display: "inline-block" }}
+            >
+              <img
+                className="uploaded-image"
+                src={URL.createObjectURL(uploadImage)}
+                alt="Sample"
+              />
+              <div className="overlay" onMouseDown={onImageClick}></div>
+              {tags.map((tag, index) => (
+                <span
+                  key={index}
+                  className="tag"
+                  style={{
+                    position: "absolute",
+                    left: tag.x,
+                    top: tag.y,
+                    backgroundColor: "rgba(0, 0, 0, 0.5)",
+                    color: "white",
+                    padding: "3px",
+                    borderRadius: "3px",
+                  }}
+                >
+                  {tag.text}
+                </span>
+              ))}
+              <input
+                ref={inputRef}
+                className="tag-input"
+                value={inputTag}
+                onBlur={onInputBlur}
+                onChange={(e) => setInputTag(e.target.value)}
+                style={{
+                  width: "100px",
+                  height: "20px",
+                  position: "absolute",
+                  left: inputPosition.x,
+                  top: inputPosition.y,
+                  zIndex: 2,
+                  display:
+                    inputTag.trim() === "" &&
+                    !inputRef.current?.contains(document.activeElement)
+                      ? "none"
+                      : "block",
+                  backgroundColor: "transparent",
+                }}
+                tabIndex="-1"
+              />
+            </div>
+
+            //end new code
+            /*           <div>
               {console.log(URL.createObjectURL(uploadImage))}
               <img
                 className="uploaded-image"
@@ -91,7 +186,7 @@ export default function Post() {
               >
                 Remove
               </button>
-            </div>
+            </div> */
           )}
           <br />
           <br />
