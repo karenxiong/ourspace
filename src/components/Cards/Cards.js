@@ -1,6 +1,7 @@
 import "./Cards.scss";
 
 import { SlHeart } from "react-icons/sl";
+import { RiHeart3Line, RiHeart3Fill } from "react-icons/ri";
 
 export default function Cards({
   post,
@@ -31,7 +32,12 @@ export default function Cards({
             className="heart-icon active"
             disabled={post.current_user_liked}
           >
-            <SlHeart color={post.current_user_liked ? "red" : "black"} />
+            {post.current_user_liked ? (
+              <RiHeart3Fill color="red" />
+            ) : (
+              <RiHeart3Line />
+            )}
+            {/* <RiHeart3Line color={post.current_user_liked ? "red" : "black"} /> */}
           </button>
           <p>{post.like_count}</p>
         </div>

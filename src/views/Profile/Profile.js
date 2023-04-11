@@ -1,14 +1,11 @@
 import "./Profile.scss";
 import React, { useState, useEffect, useRef } from "react";
 import { Container, Row, Col } from "reactstrap";
-import { createPortal } from "react-dom";
 import axios from "axios";
 import Cards from "../../components/Cards/Cards";
 import { Link } from "react-router-dom";
-import PostModal from "../../components/PostModal/PostModal";
-import { Routes, Route, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
-import Highlight from "../../components/Highlight";
 import Loading from "../../components/Loading";
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import SpaceModal from "../../components/Modal/Model";

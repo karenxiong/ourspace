@@ -7,7 +7,6 @@ import { createPortal } from "react-dom";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 
 import Cards from "../Cards/Cards";
-import PostModal from "../PostModal/PostModal.js";
 import SpaceModal from "../Modal/Model";
 
 export default function Content() {

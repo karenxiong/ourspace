@@ -4,8 +4,9 @@ import axios from "axios";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import ImageMarker, { Marker } from "react-image-marker";
 import { Link } from "react-router-dom";
-import { SlHeart } from "react-icons/sl";
 import { useAuth0 } from "@auth0/auth0-react";
+import { SlHeart } from "react-icons/sl";
+import { RiHeart3Line, RiHeart3Fill } from "react-icons/ri";
 
 function getDate(timestamp) {
   const dateObject = new Date(timestamp);
@@ -113,7 +114,12 @@ function SpaceModal(args) {
             onClick={onLikeClick}
             disabled={args.current_user_liked || !user}
           >
-            <SlHeart color={args.current_user_liked ? "red" : "black"} />
+            {args.current_user_liked ? (
+              <RiHeart3Fill color="red" />
+            ) : (
+              <RiHeart3Line />
+            )}
+            {/* <SlHeart color={args.current_user_liked ? "red" : "black"} /> */}
           </button>
           <p>{args.like_count}</p>
         </div>
