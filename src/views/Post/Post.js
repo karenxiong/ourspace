@@ -96,6 +96,13 @@ export default function Post() {
           />
         </FormGroup>
         <FormGroup>
+          <div className="upload-tip-container">
+            <h6 className="upload-tip">
+              Once you have uploaded your space, you may add markers by clicking
+              anywhere on your space to show other's where to find the products
+              shown!
+            </h6>
+          </div>
           {uploadImage && (
             //new code
 

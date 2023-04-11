@@ -1,0 +1,55 @@
+.image-marker__image {
+  height: auto;
+  max-height: 1000px;
+  width: 100%;
+  object-fit: contain;
+}
+
+.post-items {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 1rem;
+}
+
+.post-markers {
+  text-decoration: none;
+  border: 0.1rem solid #62888d;
+  border-radius: 8px;
+  padding: 0.8rem;
+  color: #548f93;
+  &:hover {
+    background-color: #548f93;
+    color: white;
+    text-decoration: none;
+  }
+  &-items {
+    margin-bottom: 0px;
+  }
+}
+
+.modal-body .image-marker__marker--default {
+  background-color: #369693;
+  border: 2px solid white;
+  font-weight: 500;
+}
+
+.space-author {
+  display: flex;
+  justify-content: space-between;
+  & .username {
+    color: #548f93;
+  }
+}
+
+.modal-body img {
+  margin: 1rem 0;
+  border-radius: 8px;
+}
+
+button .space-likes {
+}
+
+.modal-header h5 {
+  font-size: 1.8rem;
+}

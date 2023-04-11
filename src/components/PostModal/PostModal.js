@@ -4,6 +4,7 @@ import "./PostModal.scss";
 import { SlHeart } from "react-icons/sl";
 import { MdOutlineClose } from "react-icons/md";
 import ImageMarker, { Marker } from "react-image-marker";
+import { Link } from "react-router-dom";
 
 export default function PostModal({
   id,
@@ -18,15 +19,13 @@ export default function PostModal({
   onClose,
 }) {
   const [markers, setMarkers] = useState([]);
-  console.log(id);
-  console.log(" someorimaemadfslkmasdklfmal");
+
   useEffect(() => {
     (async () => {
       const response = await axios.get(
         `http://localhost:8080/posts/${id}/markers`
       );
       setMarkers(response.data);
-      console.log(" == = = = = == = = =response: ", response);
     })();
   }, []);
 
@@ -48,23 +47,24 @@ export default function PostModal({
             <h5 className="post-modal-username">@{username}</h5>
             <h6 className="post-modal-timestamp">{timestamp}</h6>
           </div>
-          <ImageMarker
-            className="uploaded-image"
-            src={img}
-            alt="post image"
-            markers={markers}
-          />
-          <hr></hr>
-          <h1>Marker Legend</h1>
-          {markers.map((marker, index) => (
-            <div>
-              <h2>Marker {index + 1}</h2>
-              <p>Title: {marker.title}</p>
-              <p>Link: {marker.link}</p>
-            </div>
-          ))}
-          <hr></hr>
+          <ImageMarker src={img} alt="post image" markers={markers} />
           <p className="post-modal-description">{description}</p>
+          <hr></hr>
+          <h5>Listed Products</h5>
+          <div className="post-items">
+            {markers.map((marker, index) => (
+              <Link
+                to={{ pathname: marker.link }}
+                target="_blank"
+                className="post-markers"
+              >
+                <h6 className="post-markers-items">
+                  #{index + 1} {marker.title}
+                </h6>
+              </Link>
+            ))}
+          </div>
+          <hr></hr>
           <div className="post-modal-comments">
             <div className="post-modal-likes">
               <SlHeart />

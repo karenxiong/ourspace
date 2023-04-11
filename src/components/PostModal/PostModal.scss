@@ -108,3 +108,32 @@
   width: 100%;
   object-fit: contain;
 }
+
+.post-items {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 1rem;
+}
+
+.post-markers {
+  text-decoration: none;
+  border: 0.1rem solid #62888d;
+  border-radius: 8px;
+  padding: 0.8rem;
+  color: #548f93;
+  &:hover {
+    background-color: #548f93;
+    color: white;
+    text-decoration: none;
+  }
+  &-items {
+    margin-bottom: 0px;
+  }
+}
+
+.post-modal-content .image-marker__marker--default {
+  background-color: #369693;
+  border: 2px solid white;
+  font-weight: 500;
+}

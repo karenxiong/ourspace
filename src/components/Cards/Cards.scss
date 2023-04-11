@@ -4,6 +4,7 @@
   border-radius: 8px;
   box-shadow: 0px 0.260424px 0.781272px rgba(0, 0, 0, 0.1),
     0px 1.38893px 3.12509px rgba(0, 0, 0, 0.13);
+  cursor: pointer;
 }
 
 .cards-body {
@@ -43,4 +44,9 @@ p {
 
 p {
   font-size: 14px;
+}
+
+button.heart-icon {
+  border: none;
+  background: transparent;
 }

@@ -3,11 +3,12 @@ import { Router, Route, Switch } from "react-router-dom";
 import { Container } from "reactstrap";
 
 import Loading from "./components/Loading";
+import UserProfile from "./components/UserProfile/UserProfile";
 import NavBar from "./components/NavBar/NavBar";
 import Footer from "./components/Footer";
 import Post from "./views/Post/Post.js";
 import Home from "./views/Home";
-import Profile from "./views/Profile";
+import Profile from "./views/Profile/Profile";
 import ExternalApi from "./views/ExternalApi";
 import { useAuth0 } from "@auth0/auth0-react";
 import history from "./utils/history";
@@ -41,6 +42,7 @@ const App = () => {
             <Route path="/" exact component={Home} />
             <Route path="/post" exact component={Post} />
             <Route path="/profile" component={Profile} />
+            <Route path="/:user_nickname" component={UserProfile} />
             <Route path="/external-api" component={ExternalApi} />
           </Switch>
         </Container>

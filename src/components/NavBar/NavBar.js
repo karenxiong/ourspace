@@ -44,28 +44,6 @@ const NavBar = () => {
       },
     });
 
-  useEffect(() => {
-    const getUserMetadata = async () => {
-      try {
-        console.log("enter try", user);
-        const accessToken = await getAccessTokenSilently({});
-        const data = {};
-        console.log("accessToken: ", accessToken);
-        const response = await axios.get("http://localhost:8080/posts", {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-        console.log(response);
-      } catch (e) {
-        console.log(e.message);
-        console.log("enter error");
-      }
-    };
-
-    getUserMetadata();
-  }, [getAccessTokenSilently, user?.sub]);
-
   return (
     <div className="nav-container">
       <Navbar color="light" light expand="md">
