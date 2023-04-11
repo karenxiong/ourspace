@@ -53,7 +53,7 @@ function SpaceModal(args) {
     });
     console.log("setPostData: ", args.setPostData);
     args.setPostData(newPostData);
-    // update backend db with post request to create new like
+    // update bagickend db with post request to create new like
     (async () => {
       const accessToken = await getAccessTokenSilently({});
       const config = {
@@ -109,7 +109,7 @@ function SpaceModal(args) {
           <button
             className="heart-icon active"
             onClick={onLikeClick}
-            disabled={args.current_user_liked}
+            disabled={args.current_user_liked || !user}
           >
             <SlHeart color={args.current_user_liked ? "red" : "black"} />
           </button>

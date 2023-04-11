@@ -10,15 +10,21 @@ import PostModal from "../../components/PostModal/PostModal";
 import Highlight from "../../components/Highlight";
 import Loading from "../../components/Loading";
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
+import SpaceModal from "../../components/Modal/Model";
 
 export const ProfileComponent = () => {
   const [postData, setPostData] = useState([]);
-  const [selectedPost, setSelectedPost] = useState();
+  const [selectedPostId, setSelectedPostId] = useState();
   const [showModal, setShowModal] = useState(false);
   const { user } = useAuth0();
   const currentUser = user.sub;
 
   const imageBaseURL = "http://localhost:8080/resources/static/assets/uploads/";
+
+  const [modal, setModal] = useState(false);
+  const toggle = () => setModal(!modal);
+
+  const selectedPost = postData.filter((post) => post.id === selectedPostId)[0];
 
   useEffect(() => {
     axios.get(`http://localhost:8080/posts/user/${user.sub}`).then((resp) => {
@@ -54,21 +60,24 @@ export const ProfileComponent = () => {
             </Link>
           </div>
         )}
-        {showModal &&
-          selectedPost &&
-          createPortal(
-            <PostModal
-              id={selectedPost.id}
-              title={selectedPost.title}
-              image={selectedPost.image} // Append imageBaseURL to the image filename
-              username={selectedPost.user_nickname}
-              description={selectedPost.description}
-              likes={selectedPost.likes}
-              timestamp={selectedPost.timestamp}
-              onClose={() => setShowModal(false)}
-            />,
-            document.body
-          )}
+        {modal && selectedPost && (
+          <SpaceModal
+            key={selectedPost.id}
+            id={selectedPost.id}
+            selectedPost={selectedPost}
+            postData={postData}
+            setPostData={setPostData}
+            isOpen={modal}
+            toggle={toggle}
+            current_user_liked={selectedPost.current_user_liked}
+            like_count={selectedPost.like_count}
+            title={selectedPost.title}
+            image={selectedPost.image} // Append imageBaseURL to the image filename
+            username={selectedPost.user_nickname}
+            description={selectedPost.description}
+            timestamp={selectedPost.timestamp}
+          />
+        )}
         {postData.map((post) => (
           <Cards
             key={post.id}
@@ -76,8 +85,8 @@ export const ProfileComponent = () => {
             username={post.user_nickname}
             image={post.image} // Append imageBaseURL to the image filename
             likes={post.likes}
-            setShowModal={setShowModal}
-            setSelectedPost={setSelectedPost}
+            setSelectedPostId={setSelectedPostId}
+            setModal={setModal}
           />
         ))}
       </main>

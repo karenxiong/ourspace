@@ -25,12 +25,12 @@ export default function Content() {
   const imageBaseURL = "http://localhost:8080/resources/static/assets/uploads/";
 
   useEffect(() => {
-    axios.get(`http://localhost:8080/posts/user/${user.sub}`).then((resp) => {
-      setPostData(resp.data);
-    });
-  }, []);
-
-  const filteredLikes = likeData.filter((likes) => likes.user_id === user.id);
+    axios
+      .get(`http://localhost:8080/posts/user/${user?.sub || ""}`)
+      .then((resp) => {
+        setPostData(resp.data);
+      });
+  }, [user]);
 
   return (
     <>
@@ -57,7 +57,6 @@ export default function Content() {
             image={selectedPost.image} // Append imageBaseURL to the image filename
             username={selectedPost.user_nickname}
             description={selectedPost.description}
-            likes={filteredLikes}
             timestamp={selectedPost.timestamp}
           />
         )}
