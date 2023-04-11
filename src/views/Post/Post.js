@@ -71,7 +71,7 @@ export default function Post() {
 
   return (
     <div>
-      <h1>Post your space</h1>
+      <h1 className="post-header">Post your space</h1>
       <Form encType="multipart/form-data" method="post" onSubmit={handleSubmit}>
         <FormGroup>
           <Label for="postTitle">Title</Label>
