@@ -6,6 +6,7 @@ import axios from "axios";
 import Cards from "../../components/Cards/Cards";
 import { Link } from "react-router-dom";
 import PostModal from "../../components/PostModal/PostModal";
+import { Routes, Route, useParams } from "react-router-dom";
 
 import Highlight from "../../components/Highlight";
 import Loading from "../../components/Loading";
@@ -13,6 +14,8 @@ import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import SpaceModal from "../../components/Modal/Model";
 
 export const ProfileComponent = () => {
+  let { id, nickname } = useParams();
+
   const [postData, setPostData] = useState([]);
   const [selectedPostId, setSelectedPostId] = useState();
   const [showModal, setShowModal] = useState(false);
@@ -27,25 +30,31 @@ export const ProfileComponent = () => {
   const selectedPost = postData.filter((post) => post.id === selectedPostId)[0];
 
   useEffect(() => {
-    axios.get(`http://localhost:8080/posts/user/${user.sub}`).then((resp) => {
-      setPostData(resp.data.filter((posts) => posts.user_id === currentUser));
-    });
+    axios
+      .get(`http://localhost:8080/posts/user/${id || user.sub}/${user.sub}`)
+      .then((resp) => {
+        setPostData(
+          resp.data.filter((posts) => posts.user_id === (id || currentUser))
+        );
+      });
   }, [showModal]);
 
   return (
     <>
       <Container className="mb-5">
         <Row className="profile-header mb-5 text-left text-md-left">
-          <Col md={2}>
-            <img
-              src={user.picture}
-              alt="Profile"
-              className="rounded-circle img-fluid profile-picture mb-3 mb-md-0"
-              referrerPolicy="no-referrer"
-            />
-          </Col>
+          {!id && (
+            <Col md={2}>
+              <img
+                src={user.picture}
+                alt="Profile"
+                className="rounded-circle img-fluid profile-picture mb-3 mb-md-0"
+                referrerPolicy="no-referrer"
+              />
+            </Col>
+          )}
           <Col md className="user-info">
-            <h2 className="user-name">@{user.nickname}</h2>
+            <h2 className="user-name">@{nickname || user.nickname}</h2>
           </Col>
         </Row>
       </Container>

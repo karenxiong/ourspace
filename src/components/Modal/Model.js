@@ -51,8 +51,8 @@ function SpaceModal(args) {
         return post;
       }
     });
-    console.log("setPostData: ", args.setPostData);
     args.setPostData(newPostData);
+
     // update bagickend db with post request to create new like
     (async () => {
       const accessToken = await getAccessTokenSilently({});
@@ -72,8 +72,6 @@ function SpaceModal(args) {
           formData,
           config
         );
-
-        console.log("response", response);
       } catch (err) {
         console.log(err);
       }
@@ -85,10 +83,14 @@ function SpaceModal(args) {
       <ModalHeader toggle={args.toggle}>{args.title}</ModalHeader>
       <ModalBody className="modal-body">
         <div className="space-author">
-          <h6 className="username">@{args.username}</h6>
+          <Link to={`/profile/${args.selectedPost.user_id}/${args.username}`}>
+            <h6 className="username">@{args.username}</h6>
+          </Link>
           <h6>{timestamp}</h6>
         </div>
         <ImageMarker src={img} alt="post image" markers={markers} />
+        <h6 className="post-modal-description">{args.description}</h6>
+        <hr></hr>
         <h5>Listed Products</h5>
         <div className="post-items">
           {markers.map((marker, index) => (

@@ -41,8 +41,8 @@ const App = () => {
           <Switch>
             <Route path="/" exact component={Home} />
             <Route path="/post" exact component={Post} />
-            <Route path="/profile" component={Profile} />
-            <Route path="/:user_nickname" component={UserProfile} />
+            <Route path="/profile" exact component={Profile} />
+            <Route path="/profile/:id/:nickname/" component={Profile} />
             <Route path="/external-api" component={ExternalApi} />
           </Switch>
         </Container>

@@ -25,11 +25,16 @@ export default function Content() {
   const imageBaseURL = "http://localhost:8080/resources/static/assets/uploads/";
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:8080/posts/user/${user?.sub || ""}`)
-      .then((resp) => {
-        setPostData(resp.data);
-      });
+    let postUrl;
+
+    if (user?.sub) {
+      postUrl = `http://localhost:8080/posts/user/${user.sub}/${user.sub}`;
+    } else {
+      postUrl = `http://localhost:8080/posts/user`;
+    }
+    axios.get(postUrl).then((resp) => {
+      setPostData(resp.data);
+    });
   }, [user]);
 
   return (
