@@ -1,6 +1,13 @@
 # OurSpace Web App
 
+![Kapture 2023-09-17 at 20 15 32](https://github.com/karenxiong/ourspace/assets/14854168/2e898ec7-5ef3-4edd-b06c-391fa089b4a4)
+
 OurSpace is a social platform where homeowners and interior design enthusiasts can share their home interior designs, connect with like-minded people, and get inspired. With OurSpace, users can upload images of their home and highlight each item in the image with an external link to let others know where to purchase it. Other users can view and like posts, and visit user profiles to see posts that are uploaded by the selected user. OurSpace is the perfect place to get inspired, discover new home decor ideas, and showcase your own unique styles.
+
+---
+
+#### Example of image posting with product tagging
+![Kapture 2023-09-17 at 21 51 38](https://github.com/karenxiong/ourspace/assets/14854168/5ff2357d-7800-42aa-9430-783063cec9c9)
 
 ## Project setup
 
